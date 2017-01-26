@@ -63,10 +63,7 @@ public class UserController {
     }
 
     @RequestMapping(value = "/filterUsers", method = RequestMethod.GET)
-    public List<User> getFiltered(HttpServletRequest request) {
-        User filterParams = new User();
-        filterParams.setName(request.getHeader("name"));
-        filterParams.setSurname(request.getHeader("surname"));
-        return userService.filterUsers(filterParams);
+    public List<User> filterUsers(HttpServletRequest request) {
+        return userService.searchByNameAndSurname(request.getHeader("name"), request.getHeader("surname"));
     }
 }

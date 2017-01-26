@@ -1,7 +1,7 @@
 package com.nevalabs.service;
 
-import com.nevalabs.dao.UserDao;
 import com.nevalabs.model.User;
+import com.nevalabs.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,20 +14,14 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     @Autowired
-    UserDao userDao;
+    UserRepository userRepository;
 
     @Override
-    public List<User> findAllUsers() {
-        return userDao.getAllUsers();
-    }
-
-    @Override
-    public List<User> filterUsers(User user) {
-        return userDao.filterUser(user);
-    }
-
-    @Override
-    public void createUser(User user) {
-        userDao.createUser(user);
+    public List<User> searchByNameAndSurname(String name, String surname) {
+        String queryName = (name != null) ? name.toLowerCase() : "";
+        String querySurname = (surname != null) ? surname.toLowerCase() : "";
+        List<User> userList = userRepository.searchByNameAndSurname(queryName, querySurname);
+        return userList;
     }
 }
+

@@ -9,9 +9,6 @@ import java.util.List;
  */
 public interface UserService {
 
-    public List<User> findAllUsers();
+    List<User> searchByNameAndSurname(String name, String surname);
 
-    public List<User> filterUsers(User user);
-
-    public void createUser(User user);
 }
