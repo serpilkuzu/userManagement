@@ -13,9 +13,6 @@ import java.util.List;
  */
 public interface UserRepository extends CrudRepository<User, Integer>{
 
-    // @Query(value = "Select a.id from user a where a.firstNa  :username", nativeQuery = true)
-    List<User> findBySurname(String username);
-
     @Query("SELECT user from User user WHERE " +
             "LOWER(user.name) LIKE CONCAT('%',:username, '%') AND " +
             "LOWER(user.surname) LIKE CONCAT('%',:userSurname, '%')")
