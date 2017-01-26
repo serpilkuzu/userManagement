@@ -11,7 +11,7 @@ public interface UserService {
 
     public List<User> findAllUsers();
 
-    public User findUser();
+    public List<User> filterUsers(User user);
 
     public void createUser(User user);
 }

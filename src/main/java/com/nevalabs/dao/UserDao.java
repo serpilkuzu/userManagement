@@ -11,7 +11,7 @@ public interface UserDao {
 
     public List<User> getAllUsers();
 
-    public User getUser();
+    public List<User> filterUser(User user);
 
     public void createUser(User user);
 
