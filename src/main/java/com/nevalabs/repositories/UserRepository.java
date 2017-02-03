@@ -1,9 +1,9 @@
 package com.nevalabs.repositories;
 
 import com.nevalabs.model.User;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
-import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 
@@ -14,8 +14,12 @@ import java.util.List;
 public interface UserRepository extends CrudRepository<User, Integer>{
 
     @Query("SELECT user from User user WHERE " +
-            "LOWER(user.name) LIKE CONCAT('%',:username, '%') AND " +
-            "LOWER(user.surname) LIKE CONCAT('%',:userSurname, '%')")
-    List<User> searchByNameAndSurname(@Param("username") String username, @Param("userSurname") String surname);
+            "LOWER(user.name) LIKE %?1% AND " +
+            "LOWER(user.surname) LIKE %?2%)")
+    List<User> findContainingNameAndSurname(String username, String surname);
+
+    List<User> findByNameAndSurnameAllIgnoreCase(String name, String surname, Sort sort);
+
+    Iterable<User> findAll(Sort sort);
 
 }

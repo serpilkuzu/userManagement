@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService {
     public List<User> searchByNameAndSurname(String name, String surname) {
         String queryName = (name != null) ? name.toLowerCase() : "";
         String querySurname = (surname != null) ? surname.toLowerCase() : "";
-        List<User> userList = userRepository.searchByNameAndSurname(queryName, querySurname);
+        List<User> userList = userRepository.findContainingNameAndSurname(queryName, querySurname);
         return userList;
     }
 }

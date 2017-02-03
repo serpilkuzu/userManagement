@@ -4,6 +4,7 @@ import com.nevalabs.model.User;
 import com.nevalabs.repositories.UserRepository;
 import com.nevalabs.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +16,7 @@ import java.util.List;
  * Created by serpilkuzu on 24/01/2017.
  */
 @RestController
-@RequestMapping(value = "user")
+@RequestMapping(value = "users")
 public class UserController {
 
     @Autowired
@@ -24,20 +25,15 @@ public class UserController {
     @Autowired
     UserService userService;
 
-    @RequestMapping("/")
-    public String sayHello() {
-        return "Welcome to User Page";
-    }
-
-    @RequestMapping(value = "/get/{id}", method = RequestMethod.GET)
+    @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public User getUser(@PathVariable int id) {
         return userRepository.findOne(id);
     }
 
-    @RequestMapping(value = "/edit", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity editUser(HttpServletRequest request, @RequestBody User user) throws Exception {
         try {
-            user = userRepository.findOne(user.getId());
+            userRepository.findOne(user.getId());
         } catch (Exception e) {
             return new ResponseEntity(HttpStatus.BAD_REQUEST);
         }
@@ -45,25 +41,26 @@ public class UserController {
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/create", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(method = RequestMethod.PUT, consumes = "application/json")
     public ResponseEntity createUser(HttpServletRequest request, @RequestBody User user) {
         userRepository.save(user);
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE)
+    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     public ResponseEntity deleteUser(HttpServletRequest request, @PathVariable int id) {
         userRepository.delete(id);
         return new ResponseEntity(HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/getAll", method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.GET)
     public Iterable<User> getAllUsers() {
-        return userRepository.findAll();
+        return userRepository.findAll(new Sort("id"));
     }
 
     @RequestMapping(value = "/filterUsers", method = RequestMethod.GET)
     public List<User> filterUsers(HttpServletRequest request) {
-        return userService.searchByNameAndSurname(request.getHeader("name"), request.getHeader("surname"));
+        return userRepository.findByNameAndSurnameAllIgnoreCase(request.getHeader("name"), request.getHeader("surname"), new Sort("id"));
     }
+
 }
