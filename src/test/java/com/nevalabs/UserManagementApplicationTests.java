@@ -35,36 +35,35 @@ public class UserManagementApplicationTests {
 
 	@Before
 	public void setup() {
-        User testUser = new User();
-        testUser.setName(name);
-        testUser.setSurname(surname);
-        testUser.setAge(age);
-        testUser.setEmail(email);
-        userId = userRepository.save(testUser).getId();
-        logger.info("User with id " + userId + " is created.");
-    }
+		User testUser = new User();
+		testUser.setName(name);
+		testUser.setSurname(surname);
+		testUser.setAge(age);
+		testUser.setEmail(email);
+		userId = userRepository.save(testUser).getId();
+		logger.info("User with id " + userId + " is created.");
+	}
 
 	@Test
 	public void testSearchByNameAndSurname(){
 		List<User> userList = userService.searchByNameAndSurname(name.substring(3, name.length()-2), surname.substring(2));
-        assert userList.stream().filter(user -> user.getId() == userId).findAny().isPresent();
-        logger.info("Created user with id " + userId + " is found in database by search query.");
+		assert userList.stream().filter(user -> user.getId() == userId).findAny().isPresent();
+		logger.info("Created user with id " + userId + " is found in database by search query.");
 	}
 
 	@Test
-    public void testCreateUser() {
-	    User user = userRepository.findOne(userId);
+	public void testCreateUser() {
+		User user = userRepository.findOne(userId);
 		assert user.getName().equals(name);
-	    assert user.getSurname().equals(surname);
-	    assert user.getAge() == age;
-	    assert user.getEmail().equals(email);
-	    logger.info("User information with id " + userId + " is the same as data in database.");
-    }
+		assert user.getSurname().equals(surname);
+		assert user.getAge() == age;
+		assert user.getEmail().equals(email);
+		logger.info("User information with id " + userId + " is the same as data in database.");
+	}
 
-    @After
-    public void deleteUser() {
-	    userRepository.delete(userId);
+	@After
+	public void deleteUser() {
+		userRepository.delete(userId);
 		logger.info("User with id " + userId + " is deleted.");
-    }
-
+	}
 }

@@ -58,7 +58,7 @@ public class UserController {
         return userRepository.findAll(new Sort("id"));
     }
 
-    @RequestMapping(value = "/filterUsers", method = RequestMethod.GET)
+    @RequestMapping(value = "filterUsers", method = RequestMethod.GET)
     public List<User> filterUsers(HttpServletRequest request) {
         return userRepository.findByNameAndSurnameAllIgnoreCase(request.getHeader("name"), request.getHeader("surname"), new Sort("id"));
     }
