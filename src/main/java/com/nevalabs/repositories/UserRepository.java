@@ -18,8 +18,12 @@ public interface UserRepository extends CrudRepository<User, Integer>{
             "LOWER(user.surname) LIKE %?2%)")
     List<User> findContainingNameAndSurname(String username, String surname);
 
-    List<User> findByNameAndSurnameAllIgnoreCase(String name, String surname, Sort sort);
+    Iterable<User> findAll();
 
-    Iterable<User> findAll(Sort sort);
+    Iterable<User> findAllByOrderByIdAsc();
 
 }
+
+
+
+

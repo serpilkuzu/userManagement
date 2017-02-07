@@ -11,4 +11,14 @@ public interface UserService {
 
     List<User> searchByNameAndSurname(String name, String surname);
 
+    User findOne(int id);
+
+    void update(int id, User user);
+
+    int save(User user);
+
+    void delete(int id);
+
+    Iterable<User> findAll();
+
 }

@@ -1,16 +1,13 @@
 package com.nevalabs.controller;
 
 import com.nevalabs.model.User;
-import com.nevalabs.repositories.UserRepository;
 import com.nevalabs.service.UserService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServletRequest;
-import java.util.List;
 
 /**
  * Created by serpilkuzu on 24/01/2017.
@@ -19,48 +16,45 @@ import java.util.List;
 @RequestMapping(value = "users")
 public class UserController {
 
-    @Autowired
-    UserRepository userRepository;
+    private final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @Autowired
     UserService userService;
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
     public User getUser(@PathVariable int id) {
-        return userRepository.findOne(id);
+        return userService.findOne(id);
+    }
+
+    @RequestMapping(value = "{id}", method = RequestMethod.PUT, consumes = "application/json")
+    public ResponseEntity editUser(@PathVariable int id, @RequestBody User user) {
+        try {
+            userService.findOne(id).getId();
+            userService.update(id, user);
+
+            return new ResponseEntity(HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error(e.toString() + " :: User id " + id + " is not found in database!");
+            return new ResponseEntity(HttpStatus.BAD_REQUEST);
+        }
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
-    public ResponseEntity editUser(HttpServletRequest request, @RequestBody User user) throws Exception {
-        try {
-            userRepository.findOne(user.getId());
-        } catch (Exception e) {
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
-        userRepository.save(user);
-        return new ResponseEntity(HttpStatus.OK);
-    }
-
-    @RequestMapping(method = RequestMethod.PUT, consumes = "application/json")
-    public ResponseEntity createUser(HttpServletRequest request, @RequestBody User user) {
-        userRepository.save(user);
+    public ResponseEntity createUser(@RequestBody User user) {
+        userService.save(user);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    public ResponseEntity deleteUser(HttpServletRequest request, @PathVariable int id) {
-        userRepository.delete(id);
+    public ResponseEntity deleteUser(@PathVariable int id) {
+        userService.delete(id);
         return new ResponseEntity(HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET)
     public Iterable<User> getAllUsers() {
-        return userRepository.findAll(new Sort("id"));
-    }
+        return userService.findAll();
 
-    @RequestMapping(value = "filterUsers", method = RequestMethod.GET)
-    public List<User> filterUsers(HttpServletRequest request) {
-        return userRepository.findByNameAndSurnameAllIgnoreCase(request.getHeader("name"), request.getHeader("surname"), new Sort("id"));
     }
 
 }
