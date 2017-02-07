@@ -1,7 +1,6 @@
 package com.nevalabs;
 
 import com.nevalabs.model.User;
-import com.nevalabs.repositories.UserRepository;
 import com.nevalabs.service.UserService;
 import org.junit.After;
 import org.junit.Before;
@@ -17,15 +16,12 @@ import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class UserManagementApplicationTests {
-
-    @Autowired
-	UserRepository userRepository;
+public class UserServiceTests {
 
 	@Autowired
 	UserService userService;
 
-	private final Logger logger = LoggerFactory.getLogger(UserManagementApplicationTests.class);
+	private final Logger logger = LoggerFactory.getLogger(UserServiceTests.class);
 
 	private static int userId;
 	private static String name = "test name";
@@ -40,20 +36,20 @@ public class UserManagementApplicationTests {
 		testUser.setSurname(surname);
 		testUser.setAge(age);
 		testUser.setEmail(email);
-		userId = userRepository.save(testUser).getId();
+		userId = userService.save(testUser);
 		logger.info("User with id " + userId + " is created.");
 	}
 
 	@Test
-	public void testSearchByNameAndSurname(){
+	public void findUser_GivenNameAndSurname_Found(){
 		List<User> userList = userService.searchByNameAndSurname(name.substring(3, name.length()-2), surname.substring(2));
 		assert userList.stream().filter(user -> user.getId() == userId).findAny().isPresent();
 		logger.info("Created user with id " + userId + " is found in database by search query.");
 	}
 
 	@Test
-	public void testCreateUser() {
-		User user = userRepository.findOne(userId);
+	public void checkUserInformation_KnownParameters_Matched() {
+		User user = userService.findOne(userId);
 		assert user.getName().equals(name);
 		assert user.getSurname().equals(surname);
 		assert user.getAge() == age;
@@ -62,8 +58,9 @@ public class UserManagementApplicationTests {
 	}
 
 	@After
+    // This method deletes users which are created for test purposes
 	public void deleteUser() {
-		userRepository.delete(userId);
+		userService.delete(userId);
 		logger.info("User with id " + userId + " is deleted.");
 	}
 }
