@@ -31,7 +31,6 @@ public class UserController {
         try {
             userService.findOne(id).getId();
             userService.update(id, user);
-
             return new ResponseEntity(HttpStatus.OK);
         } catch (Exception e) {
             logger.error(e.toString() + " :: User id " + id + " is not found in database!");

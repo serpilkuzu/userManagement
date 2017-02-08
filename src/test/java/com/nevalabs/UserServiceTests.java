@@ -57,8 +57,8 @@ public class UserServiceTests {
 		logger.info("User information with id " + userId + " is the same as data in database.");
 	}
 
+	// This method deletes users which are created for test purposes
 	@After
-    // This method deletes users which are created for test purposes
 	public void deleteUser_AfterTest_Deleted() {
 		userService.delete(userId);
 		logger.info("User with id " + userId + " is deleted.");
