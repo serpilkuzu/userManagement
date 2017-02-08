@@ -28,9 +28,6 @@ public class User implements Serializable {
     @Column(name = "age")
     private int age;
 
-    @Column(name = "gender")
-    private int gender;
-
     public int getId() {
         return id;
     }
@@ -71,14 +68,6 @@ public class User implements Serializable {
         this.age = age;
     }
 
-    public int getGender() {
-        return gender;
-    }
-
-    public void setGender(int gender) {
-        this.gender = gender;
-    }
-
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("User{");
@@ -87,7 +76,6 @@ public class User implements Serializable {
         sb.append(", surname='").append(surname).append('\'');
         sb.append(", email='").append(email).append('\'');
         sb.append(", age=").append(age);
-        sb.append(", gender=").append(gender);
         sb.append('}');
         return sb.toString();
     }
