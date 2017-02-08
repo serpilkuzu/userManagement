@@ -30,7 +30,7 @@ public class UserServiceTests {
 	private static String email = "serpil.kuzu@nevalabs.com";
 
 	@Before
-	public void setup() {
+	public void createUser_BeforeTest_Created() {
 		User testUser = new User();
 		testUser.setName(name);
 		testUser.setSurname(surname);
@@ -59,7 +59,7 @@ public class UserServiceTests {
 
 	@After
     // This method deletes users which are created for test purposes
-	public void deleteUser() {
+	public void deleteUser_AfterTest_Deleted() {
 		userService.delete(userId);
 		logger.info("User with id " + userId + " is deleted.");
 	}
