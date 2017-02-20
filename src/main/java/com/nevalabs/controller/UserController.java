@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * Created by serpilkuzu on 24/01/2017.
  */
+@CrossOrigin
 @RestController
 @RequestMapping(value = "users")
 public class UserController {
@@ -53,7 +54,6 @@ public class UserController {
     @RequestMapping(method = RequestMethod.GET)
     public Iterable<User> getAllUsers() {
         return userService.findAll();
-
     }
 
 }
