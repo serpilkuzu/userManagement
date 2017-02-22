@@ -28,21 +28,14 @@ public class UserController {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.PUT, consumes = "application/json")
-    public ResponseEntity editUser(@PathVariable int id, @RequestBody User user) {
-        try {
-            userService.findOne(id).getId();
-            userService.update(id, user);
-            return new ResponseEntity(HttpStatus.OK);
-        } catch (Exception e) {
-            logger.error(e.toString() + " :: User id " + id + " is not found in database!");
-            return new ResponseEntity(HttpStatus.BAD_REQUEST);
-        }
+    public User editUser(@RequestBody User user) {
+        return userService.save(user);
+
     }
 
     @RequestMapping(method = RequestMethod.POST, consumes = "application/json")
-    public ResponseEntity createUser(@RequestBody User user) {
-        userService.save(user);
-        return new ResponseEntity(HttpStatus.OK);
+    public User createUser(@RequestBody User user) {
+        return userService.save(user);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)

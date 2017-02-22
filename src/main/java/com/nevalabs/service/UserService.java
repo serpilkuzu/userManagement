@@ -13,9 +13,7 @@ public interface UserService {
 
     User findOne(int id);
 
-    void update(int id, User user);
-
-    int save(User user);
+    User save(User user);
 
     void delete(int id);
 

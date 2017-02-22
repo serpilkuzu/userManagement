@@ -36,7 +36,7 @@ public class UserServiceTests {
 		testUser.setSurname(surname);
 		testUser.setAge(age);
 		testUser.setEmail(email);
-		userId = userService.save(testUser);
+		userId = userService.save(testUser).getId();
 		logger.info("User with id " + userId + " is created.");
 	}
 
